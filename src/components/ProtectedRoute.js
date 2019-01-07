@@ -1,40 +1,16 @@
 import React, { Component } from 'react';
+import {Route, Redirect} from 'react-router-dom';
 
 /**
- * UserList
+ * 受保护的组件
+ *
+ * 当通过函数来定义组件的时候，参数是属性对象
+ * 继承Component类包括状态，不需要状态就可以使用函数式声明
  */
-export default class UserAdd extends Component{
-    constructor() {
-        super();
-        this.state = {}
-    }
-
-    handleSubmit=(event)=>{
-        event.preventDefault();
-        let name = this.name.value;
-        let userStr = localStorage.getItem('users');
-        // 转成对象数组
-        let users = userStr?JSON.parse(userStr):[];
-        // 加入新的对象
-        users.push({id:Date.now(), name});
-        // 新数组保存到缓存中
-        localStorage.setItem('users', JSON.stringify(users));
-        // 跳转
-        this.props.history.push('/user/list');
-    };
-
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">姓名</label>
-                {/* 虚拟元素挂载到真实dom中去，调用。ref代表真实dom元素  把input真实dom元素挂载到name实例上去*/}
-                <input type="text" className="form-control" ref={ref=>this.name=ref} />
-              </div>
-              <div className="form-group">
-                <input type="submit" className="btn btn-success"/>
-              </div>
-            </form>
-        )
-    }
+/*props = {path:"./profile", component:Profile}  解构赋值，rest其余参数 rest={path:"./profile"}*/
+export default function({component:Component, ...rest}) {
+  /*...展开运算符 <Route path="./profile"/> */
+  return <Route {...rest} render={(props)=>
+    localStorage.getItem('login')?<Component/> : <Redirect to={{pathname:'./login', state:{from:props.location.pathname} }} />
+  }/>
 }
