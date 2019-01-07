@@ -12,6 +12,7 @@ import './App.css'
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import MenuLink from './MenuLink';
+import NotFound from './NotFound';
 
 export default (
   <Router>
@@ -40,8 +41,9 @@ export default (
               <Route path="/home" component={Home}></Route>
               <Route path="/user" component={User}></Route>
               <Route path="/login" component={Login}></Route>
-              <ProtectedRoute path="/profile" component={Profile}></ProtectedRoute>
-              <Route path="/:name" render={props=><div>{props.match.params.name}</div>}></Route>
+              <Route path="/user" component={User}></Route>
+              <ProtectedRoute component={NotFound}></ProtectedRoute>
+              {/*<Route path="/:name" render={props=><div>{props.match.params.name}</div>}></Route>*/}
             </Switch>
           </div>
         </div>
